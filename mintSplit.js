@@ -9,7 +9,6 @@ import {
     clusterApiUrl
   } from "@solana/web3.js";
 import {
-    treasuryAddress,
     creators,
     network
 } from "./utils.js"
@@ -19,7 +18,10 @@ const connection = new Connection(
     'confirmed',
 );
 
-const treasury = new PublicKey(treasuryAddress)
+const MY_SECRET_KEY = process.env.TREASURY_SECRET_KEY.split(",")
+const wallet = Keypair.fromSecretKey(
+    new Uint8Array(MY_SECRET_KEY)
+)
 
 async function handleTransaction(sigs, accountInfo) {
     const transaction = await connection.getTransaction(sigs[0].signature)
@@ -30,17 +32,12 @@ async function handleTransaction(sigs, accountInfo) {
 
     let diff
     for (let i=0; i<accounts.length; i++) {
-        if (accounts[i].toString() === treasury.toString()) {
+        if (accounts[i].toString() === wallet.publicKey.toString()) {
             diff = postBalances[i] - preBalances[i]
         }
     }
     if (diff > 0) {
         console.log(`Starting balance for treasury: ${accountInfo.lamports / LAMPORTS_PER_SOL}`)
-        
-        const MY_SECRET_KEY = process.env.TREASURY_SECRET_KEY.split(",")
-        const wallet = Keypair.fromSecretKey(
-            new Uint8Array(MY_SECRET_KEY)
-        )
         
         let creatorPubkey
         for (let i=0; i<creators.length; i++) {
@@ -74,9 +71,9 @@ async function handleTransaction(sigs, accountInfo) {
 
 function onChange(accountInfo, _context) {
     (async () => {
-        const sigs = await connection.getConfirmedSignaturesForAddress2(treasury)
+        const sigs = await connection.getConfirmedSignaturesForAddress2(wallet.publicKey)
         await handleTransaction(sigs, accountInfo)
     })()
 }
 
-const id = connection.onAccountChange(treasury, onChange)
+const id = connection.onAccountChange(wallet.publicKey, onChange)

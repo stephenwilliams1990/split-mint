@@ -1,6 +1,3 @@
-
-export const treasuryAddress = '<treasuryPubkeyAsString>'
-
 export const creators = [
     { 
         "address" : '<creator1PubkeyAsString>',
