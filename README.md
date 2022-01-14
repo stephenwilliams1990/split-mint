@@ -12,6 +12,12 @@ Note: This is experimental software for a young ecosystem. Use at your own risk.
 
 ## Installation
 
+Clone the repository
+
+```
+git clone https://github.com/stephenwilliams1990/split-mint.git
+```
+
 To get started, you will need to make the following changes to the files in the package:
 
 ### 1. Update the .envexample file with your Treasury Private Key
