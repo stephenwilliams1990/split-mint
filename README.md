@@ -30,13 +30,7 @@ Once this is done you can save the file as .env.
 
 ### 2. Update the variables in utils.js
 
-There are 3 variables to update here, being the Treasury Address (as string), the creators array, and the network.
-
-Insert your Treasury Address as a string. For example:
-
-```
-export const treasuryAddress = '4S9UTxi37bB5vRgURmUimzht6pDcnT4DnJKf1p8SW37e'
-```
+There are 2 variables to update here, being the creators array and the network.
 
 Update the creators array as required. Add more creators and change the share as necessary. Note a share of 50 means that the creator will receive 50% of the funds. Within the creators array, the address should be the string of the creators' address, and share should be a number. For example:
 
